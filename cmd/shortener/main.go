@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 )
@@ -24,34 +23,37 @@ func handleUrlShortener(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		if err := r.ParseForm(); err != nil {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			http.Error(w, "Bad request", http.StatusBadRequest)
 			return
 		}
 
 		url := r.FormValue("url")
 		if url == "" {
-			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-			w.WriteHeader(200)
-			fmt.Fprintln(w, "No")
+			http.Error(w, "Bad request", http.StatusBadRequest)
 		}
+
+		newUrl := url + "/1"
 
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(201)
+
 		resp := make(map[string]string)
-		resp["message"] = "Unauthorized"
-		jsonResp, _ := json.Marshal(url + "/1")
+		resp["url"] = newUrl
+		jsonResp, _ := json.Marshal(resp)
 		w.Write(jsonResp)
 
 	case "GET":
-		url := r.URL.Query().Get("url")
+		id := r.URL.Query().Get("id")
+
+		fullUrl := "http://localhost:8080"
+
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		w.WriteHeader(201)
-		resp := make(map[string]string)
-		resp["message"] = "Unauthorized"
-		jsonResp, _ := json.Marshal(url + "/2")
-		w.Write(jsonResp)
+		w.Header().Set("Location", fullUrl)
+		w.WriteHeader(307)
+
+		w.Write([]byte(id))
 
 	default:
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		http.Error(w, "Bad request", http.StatusBadRequest)
 	}
 }
