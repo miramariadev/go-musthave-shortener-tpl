@@ -39,7 +39,7 @@ func handleURLShortener(w http.ResponseWriter, r *http.Request) {
 
 		ur := r.FormValue("url")
 		if ur == "" {
-			http.Error(w, str, http.StatusBadRequest)
+			http.Error(w, "empty url"+str, http.StatusBadRequest)
 			return
 		}
 
