@@ -28,7 +28,7 @@ func handleURLShortener(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		ur := r.FormValue("URL")
+		ur := r.FormValue("url")
 		if ur == "" {
 			http.Error(w, "Bad request", http.StatusBadRequest)
 			return
