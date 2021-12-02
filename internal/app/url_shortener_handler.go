@@ -7,6 +7,8 @@ import (
 	"net/url"
 )
 
+const maxInt = 99999
+
 type URLShortenerHandler struct {
 	service *URLShortenerService
 }
@@ -44,7 +46,7 @@ func (c *URLShortenerHandler) HandleShortURL(w http.ResponseWriter, r *http.Requ
 			return
 		}
 
-		longURL, err := c.service.GetLongURLById(id)
+		longURL, err := c.service.GetLongURLByID(id)
 		if err != nil {
 			http.NotFoundHandler()
 			return
