@@ -32,25 +32,17 @@ func (c *URLShortenerHandler) HandleShortURL(w http.ResponseWriter, r *http.Requ
 			return
 		}
 
-		newURL := c.service.CreateShortURL(longURL)
-
+		idURL := c.service.CreateShortURL(longURL)
+		responseURL := "http://localhost:8080/" + idURL
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(201)
-		fmt.Fprint(w, newURL)
+		fmt.Fprint(w, responseURL)
 
 		return
 
 	case "GET":
-		/*id := r.URL.Query().Get("id")
-		if id == "" {
-			http.Error(w, "StatusBadRequest", http.StatusBadRequest)
-			return
-		}*/
-
 		data := strings.Split(r.URL.String(), "/")
 		id := data[len(data)-1]
-
-		//id это символы после слеша
 
 		longURL, err := c.service.GetLongURLByID(id)
 		if err != nil {
