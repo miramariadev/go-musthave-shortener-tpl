@@ -1,13 +1,14 @@
 package app
 
 import (
+	"errors"
 	"math/rand"
 	"strconv"
 )
 
 type Storage interface {
 	AddURL(id string, url string)
-	GetURL(id string) (string, error)
+	GetURL(id string) string
 }
 
 type URLShortenerService struct {
@@ -23,14 +24,13 @@ func NewURLShortenerService(storage Storage) *URLShortenerService {
 func (srv *URLShortenerService) CreateShortURL(url string) string {
 	id := strconv.Itoa(rand.Intn(maxInt))
 	srv.storage.AddURL(id, url)
-	shortedURL := "http://localhost:8080/" + id //url + "/" + id
-	return shortedURL
+	return id
 }
 
 func (srv *URLShortenerService) GetLongURLByID(id string) (string, error) {
-	url, err := srv.storage.GetURL(id)
-	if err != nil {
-		return "", err
+	url := srv.storage.GetURL(id)
+	if url == "" {
+		return url, errors.New("requested link does not exist")
 	}
 
 	return url, nil
