@@ -46,6 +46,11 @@ func (c *URLShortenerHandler) HandleShortURL(w http.ResponseWriter, r *http.Requ
 			return
 		}
 
+		/*data := strings.Split(r.URL.String(), "/")
+		id = data[len(data) - 1]*/
+
+		//id это символы после слеша
+
 		longURL, err := c.service.GetLongURLByID(id)
 		if err != nil {
 			http.NotFoundHandler()

@@ -28,5 +28,3 @@ func main() {
 
 	log.Fatal(server.ListenAndServe())
 }
-
-//go build  github.com/miramariadev/go-musthave-shortener-tpl/cmd/shortener
