@@ -23,7 +23,7 @@ func NewURLShortenerService(storage Storage) *URLShortenerService {
 func (srv *URLShortenerService) CreateShortURL(url string) string {
 	id := strconv.Itoa(rand.Intn(maxInt))
 	srv.storage.AddURL(id, url)
-	shortedURL := url + "/" + id
+	shortedURL := id //url + "/" + id
 	return shortedURL
 }
 
