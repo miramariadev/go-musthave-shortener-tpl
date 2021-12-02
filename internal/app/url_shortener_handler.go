@@ -53,7 +53,7 @@ func (c *URLShortenerHandler) HandleShortURL(w http.ResponseWriter, r *http.Requ
 
 		longURL, err := c.service.GetLongURLByID(id)
 		if err != nil {
-			http.NotFoundHandler()
+			http.Error(w, "Not found", http.StatusNotFound)
 			return
 		}
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
