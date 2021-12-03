@@ -6,6 +6,8 @@ import (
 	"strconv"
 )
 
+const maxInt = 99999
+
 type Storage interface {
 	AddURL(id string, url string)
 	GetURL(id string) string
