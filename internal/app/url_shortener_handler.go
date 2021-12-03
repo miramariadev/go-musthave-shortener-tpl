@@ -23,6 +23,7 @@ func NewURLShortenerHandler(service *URLShortenerService) *URLShortenerHandler {
 func (c *URLShortenerHandler) HandleShortURL(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
+		defer r.Body.Close()
 		requestData, _ := io.ReadAll(r.Body)
 		longURL := string(requestData)
 
