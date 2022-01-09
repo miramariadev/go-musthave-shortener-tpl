@@ -84,31 +84,6 @@ func TestURLShortenerHandler_HandleShortURL(t *testing.T) {
 			request:     "/",
 			requestBody: "1234567",
 		},
-
-		{
-			name:   "GET endpoint positive #1",
-			method: http.MethodGet,
-			want: want{
-				contentType:    "text/plain; charset=utf-8",
-				headerLocation: "http://rp21sh.yandex/avshz7qrl/h4ululwnp7bow",
-				statusCode:     http.StatusTemporaryRedirect,
-				result:         "",
-			},
-			request:     "/testID",
-			requestBody: "",
-		},
-
-		{
-			name:   "GET endpoint bad request test #1",
-			method: http.MethodGet,
-			want: want{
-				contentType: "text/plain; charset=utf-8",
-				statusCode:  http.StatusNotFound,
-				result:      "Not found",
-			},
-			request:     "/not_exist_id",
-			requestBody: "",
-		},
 	}
 
 	for _, tt := range tests {
