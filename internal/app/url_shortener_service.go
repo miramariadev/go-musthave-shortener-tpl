@@ -1,9 +1,6 @@
 package app
 
-import (
-	"math/rand"
-	"strconv"
-)
+import "github.com/miramariadev/go-musthave-shortener-tpl/internal/app/helpers"
 
 type Storage interface {
 	AddURL(id string, url string)
@@ -21,13 +18,13 @@ func NewURLShortenerService(storage Storage) *URLShortenerService {
 }
 
 func (srv *URLShortenerService) CreateShortURL(url string) string {
-	id := strconv.Itoa(rand.Intn(maxInt))
+	id := string(rune(helpers.GenerateInteger())) + helpers.GenerateString()
 	srv.storage.AddURL(id, url)
 	shortedURL := url + "/" + id
 	return shortedURL
 }
 
-func (srv *URLShortenerService) GetLongURLByID(id string) (string, error) {
+func (srv *URLShortenerService) GetLongURLById(id string) (string, error) {
 	url, err := srv.storage.GetURL(id)
 	if err != nil {
 		return "", err

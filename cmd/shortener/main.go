@@ -2,16 +2,10 @@ package main
 
 import (
 	"log"
-	"math/rand"
 	"net/http"
-	"time"
 
 	"github.com/miramariadev/go-musthave-shortener-tpl/internal/app"
 )
-
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
 
 func main() {
 	storage := app.NewMemoryStorage()
