@@ -28,40 +28,32 @@ func handleURLShortener(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		ur := r.FormValue("URL")
-		if ur == "" {
-			http.Error(w, "Bad request", http.StatusBadRequest)
-			return
-		}
+		ur := r.FormValue("url")
 
 		_, err := url.ParseRequestURI(ur)
 		if err != nil {
 			http.Error(w, "Bad request", http.StatusBadRequest)
-			return
 		}
 
-		newURL := ur + "/1"
+		newUrl := ur + "/1"
 
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(201)
 
-		fmt.Fprintln(w, newURL)
-		return
+		fmt.Fprintln(w, newUrl)
 
 	case "GET":
 		id := r.URL.Query().Get("id")
 
-		fullURL := "http://localhost:8080"
+		fullUrl := "http://localhost:8080"
 
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		w.Header().Set("Location", fullURL)
+		w.Header().Set("Location", fullUrl)
 		w.WriteHeader(307)
 
 		w.Write([]byte(id))
-		return
 
 	default:
 		http.Error(w, "Bad request", http.StatusBadRequest)
-		return
 	}
 }
