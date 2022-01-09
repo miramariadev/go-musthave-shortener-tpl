@@ -24,24 +24,24 @@ func handleURLShortener(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		if err := r.ParseForm(); err != nil {
-			http.Error(w, "ParseForm", http.StatusBadRequest)
+			http.Error(w, "Bad request", http.StatusBadRequest)
 			return
 		}
 
 		ur := r.FormValue("url")
 		if ur == "" {
-			http.Error(w, "FormValue", http.StatusBadRequest)
+			http.Error(w, "Bad request", http.StatusBadRequest)
 			return
 		}
 
 		_, err := url.ParseRequestURI(ur)
 		if err != nil {
-			http.Error(w, "ParseRequestURI", http.StatusBadRequest)
+			http.Error(w, "Bad request", http.StatusBadRequest)
 			return
 		}
 
 		newURL := ur + "/1"
-		// если параметр не пустой, и является url
+
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(201)
 
@@ -61,10 +61,7 @@ func handleURLShortener(w http.ResponseWriter, r *http.Request) {
 		return
 
 	default:
-		http.Error(w, "Bad method", http.StatusBadRequest)
+		http.Error(w, "Bad request", http.StatusBadRequest)
 		return
 	}
 }
-
-// вместо url возвращается 400
-// вместо 400 возвращается 201
