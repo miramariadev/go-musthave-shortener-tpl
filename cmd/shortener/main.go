@@ -23,17 +23,8 @@ func main() {
 func handleURLShortener(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
-
-		var str string
-		for key, values := range r.Form {
-			for _, value := range values {
-				fmt.Println(key, value)
-				str = str + key + value
-			}
-		}
-
 		if err := r.ParseForm(); err != nil {
-			http.Error(w, str, http.StatusBadRequest)
+			http.Error(w, "ParseForm", http.StatusBadRequest)
 			return
 		}
 
