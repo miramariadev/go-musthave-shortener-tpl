@@ -1,19 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
-
-	"go-musthave-shortener-tpl/internal/app"
+	"net/url"
 )
 
 func main() {
-	storage := app.NewMemoryStorage()
-	service := app.NewURLShortenerService(storage)
-	handler := app.NewURLShortenerHandler(service)
-
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", handler.HandleShortURL)
+
+	mux.HandleFunc("/", handleURLShortener)
 
 	server := &http.Server{
 		Addr:    ":8080",
@@ -23,4 +20,64 @@ func main() {
 	log.Fatal(server.ListenAndServe())
 }
 
-//go build  github.com/miramariadev/go-musthave-shortener-tpl/cmd/shortener
+func handleURLShortener(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "POST":
+
+		var str string
+		for key, values := range r.Form {
+			for _, value := range values {
+				fmt.Println(key, value)
+				str = str + key + value
+			}
+		}
+
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, str, http.StatusBadRequest)
+			return
+		}
+
+		ur := r.FormValue("url")
+
+		newURL := ur + "/1"
+
+		if ur == "" {
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			w.WriteHeader(201)
+			fmt.Fprintln(w, "http://localhost:8080/1")
+
+			return
+		}
+
+		_, err := url.ParseRequestURI(ur)
+		if err != nil {
+			http.Error(w, "ParseRequestURI", http.StatusBadRequest)
+			return
+		}
+
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.WriteHeader(201)
+
+		fmt.Fprintln(w, newURL)
+		return
+
+	case "GET":
+		id := r.URL.Query().Get("id")
+
+		fullURL := "http://localhost:8080"
+
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.Header().Set("Location", fullURL)
+		w.WriteHeader(307)
+
+		w.Write([]byte(id))
+		return
+
+	default:
+		http.Error(w, "Bad method", http.StatusBadRequest)
+		return
+	}
+}
+
+// вместо url возвращается 400
+// вместо 400 возвращается 201

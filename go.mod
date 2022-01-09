@@ -1,3 +1,3 @@
-module github.com/miramariadev/go-musthave-shortener-tpl
+module github.com/miramariadev/practicum
 
 go 1.17
