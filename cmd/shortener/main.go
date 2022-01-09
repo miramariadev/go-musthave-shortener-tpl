@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/go-chi/chi/v5"
 	"github.com/miramariadev/go-musthave-shortener-tpl/internal/app"
 )
 
@@ -19,14 +18,12 @@ func main() {
 	service := app.NewURLShortenerService(storage)
 	handler := app.NewURLShortenerHandler(service)
 
-	r := chi.NewRouter()
-
-	r.Get("/{urlID}", handler.HandleShortURL)
-	r.Post("/", handler.HandleShortURL)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", handler.HandleShortURL)
 
 	server := &http.Server{
 		Addr:    ":8080",
-		Handler: r,
+		Handler: mux,
 	}
 
 	log.Fatal(server.ListenAndServe())

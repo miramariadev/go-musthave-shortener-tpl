@@ -2,11 +2,10 @@ package app
 
 import (
 	"fmt"
-	"github.com/go-chi/chi/v5"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 const host = "http://localhost:8080/"
@@ -48,14 +47,10 @@ func (c *URLShortenerHandler) HandleShortURL(w http.ResponseWriter, r *http.Requ
 		return
 
 	case "GET":
-		id := chi.URLParam(r, "urlID")
-		if id == "" {
-			http.Error(w, "Not found", http.StatusNotFound)
-			return
-		}
+		data := strings.Split(r.URL.String(), "/")
+		id := data[len(data)-1]
 
 		longURL, err := c.service.GetLongURLByID(id)
-		log.Println(id)
 		if err != nil {
 			http.Error(w, "Not found", http.StatusNotFound)
 			return
@@ -71,6 +66,3 @@ func (c *URLShortenerHandler) HandleShortURL(w http.ResponseWriter, r *http.Requ
 		return
 	}
 }
-
-//curl -X POST -H "Content-Type: text/plain" -d  'http://rp21sh.yandex/avshz7qrl/h4ululwnp7bow' http://localhost:8080
-//curl -X GET http://localhost:8080/56430
