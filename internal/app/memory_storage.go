@@ -1,6 +1,7 @@
 package app
 
 import (
+	"errors"
 	"sync"
 )
 
@@ -22,9 +23,13 @@ func (s *MemoryStorage) AddURL(id string, url string) {
 	s.urls[id] = url
 }
 
-func (s *MemoryStorage) GetURL(id string) string {
+func (s *MemoryStorage) GetURL(id string) (string, error) {
 	defer s.mx.Unlock()
 	s.mx.Lock()
 
-	return s.urls[id]
+	if url, isExist := s.urls[id]; isExist {
+		return url, nil
+	}
+
+	return "", errors.New("requested link does not exist")
 }
