@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -33,14 +32,14 @@ func handleURLShortener(w http.ResponseWriter, r *http.Request) {
 		_, err := url.ParseRequestURI(ur)
 		if err != nil {
 			http.Error(w, "Bad request", http.StatusBadRequest)
-		}
 
+		}
 		newUrl := ur + "/1"
 
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(201)
 
-		fmt.Fprintln(w, newUrl)
+		w.Write([]byte(newUrl))
 
 	case "GET":
 		id := r.URL.Query().Get("id")
