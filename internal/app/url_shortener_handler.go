@@ -8,16 +8,13 @@ import (
 	"strings"
 )
 
-type URLService interface {
-	CreateShortURL(url string) string
-	GetLongURLByID(id string) (string, error)
-}
+const maxInt = 99999
 
 type URLShortenerHandler struct {
-	service URLService
+	service *URLShortenerService
 }
 
-func NewURLShortenerHandler(service URLService) *URLShortenerHandler {
+func NewURLShortenerHandler(service *URLShortenerService) *URLShortenerHandler {
 	return &URLShortenerHandler{
 		service: service,
 	}
@@ -39,7 +36,7 @@ func (c *URLShortenerHandler) HandleShortURL(w http.ResponseWriter, r *http.Requ
 		idURL := c.service.CreateShortURL(longURL)
 		responseURL := "http://localhost:8080/" + idURL
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		w.WriteHeader(http.StatusCreated)
+		w.WriteHeader(201)
 		fmt.Fprint(w, responseURL)
 
 		return
@@ -55,7 +52,7 @@ func (c *URLShortenerHandler) HandleShortURL(w http.ResponseWriter, r *http.Requ
 		}
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.Header().Set("Location", longURL)
-		w.WriteHeader(http.StatusTemporaryRedirect)
+		w.WriteHeader(307)
 		fmt.Fprint(w, "")
 		return
 
