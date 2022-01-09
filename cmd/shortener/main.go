@@ -42,7 +42,9 @@ func handleURLShortener(w http.ResponseWriter, r *http.Request) {
 		newURL := ur + "/1"
 
 		if ur == "" {
-			http.Error(w, str, 201)
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			w.WriteHeader(201)
+			fmt.Fprintln(w, newURL)
 			return
 		}
 
