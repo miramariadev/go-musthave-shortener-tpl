@@ -8,8 +8,6 @@ import (
 	"strings"
 )
 
-const host = "http://localhost:8080/"
-
 type URLService interface {
 	CreateShortURL(url string) string
 	GetLongURLByID(id string) (string, error)
@@ -39,7 +37,7 @@ func (c *URLShortenerHandler) HandleShortURL(w http.ResponseWriter, r *http.Requ
 		}
 
 		idURL := c.service.CreateShortURL(longURL)
-		responseURL := host + idURL
+		responseURL := "http://localhost:8080/" + idURL
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, responseURL)

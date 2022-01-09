@@ -35,6 +35,61 @@ func (usm *URLServiceMock) GetLongURLByID(id string) (string, error) {
 	return "http://rp21sh.yandex/avshz7qrl/h4ululwnp7bow", nil
 }
 
+//гет отправляет запрос с чиселкой
+//гет отправляет фигню
+
+//хотим проверить заголовки, статус ответа, тело ответа
+
+/*
+POST
+
+data:
+url http://rp21sh.yandex/avshz7qrl/h4ululwnp7bow
+header Content-Type: text/plain"
+host http://localhost:8080
+
+want:
+status code 201
+body http://localhost:8080/чиселка
+
+------------
+data:
+url ""
+header Content-Type: text/plain"
+host http://localhost:8080
+
+want:
+status code 400
+
+------------
+data:
+url "1234567"
+header Content-Type: text/plain"
+host http://localhost:8080
+
+want:
+status code 400
+-------------
+
+GET
+data:
+header Content-Type: text/plain"
+host http://localhost:8080/чиселка
+
+want:
+status code 307
+header location =  http://rp21sh.yandex/avshz7qrl/h4ululwnp7bow
+
+
+-------
+data:
+header Content-Type: text/plain"
+host http://localhost:8080/ч567890щшор
+
+want:
+status code 404
+*/
+
 func TestURLShortenerHandler_HandleShortURL(t *testing.T) {
 	type want struct {
 		contentType    string
