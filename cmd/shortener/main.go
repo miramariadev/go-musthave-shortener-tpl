@@ -39,9 +39,7 @@ func handleURLShortener(w http.ResponseWriter, r *http.Request) {
 
 		ur := r.FormValue("url")
 		if ur == "" {
-			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-			w.WriteHeader(201)
-			fmt.Fprintln(w, ur)
+			http.Error(w, "empty url"+str, http.StatusBadRequest)
 			return
 		}
 
