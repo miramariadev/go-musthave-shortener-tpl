@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 )
 
 const maxInt = 99999
@@ -41,14 +40,14 @@ func (c *URLShortenerHandler) HandleShortURL(w http.ResponseWriter, r *http.Requ
 		return
 
 	case "GET":
-		/*id := r.URL.Query().Get("id")
+		id := r.URL.Query().Get("id")
 		if id == "" {
 			http.Error(w, "StatusBadRequest", http.StatusBadRequest)
 			return
-		}*/
+		}
 
-		data := strings.Split(r.URL.String(), "/")
-		id := data[len(data)-1]
+		/*data := strings.Split(r.URL.String(), "/")
+		id = data[len(data) - 1]*/
 
 		//id это символы после слеша
 
@@ -60,7 +59,6 @@ func (c *URLShortenerHandler) HandleShortURL(w http.ResponseWriter, r *http.Requ
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.Header().Set("Location", longURL)
 		w.WriteHeader(307)
-		fmt.Fprint(w, "")
 		return
 
 	default:
