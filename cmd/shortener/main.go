@@ -38,13 +38,10 @@ func handleURLShortener(w http.ResponseWriter, r *http.Request) {
 		}
 
 		ur := r.FormValue("url")
-
-		newURL := ur + "/1"
-
 		if ur == "" {
 			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 			w.WriteHeader(201)
-			fmt.Fprintln(w, newURL)
+			fmt.Fprintln(w, ur)
 			return
 		}
 
@@ -54,6 +51,8 @@ func handleURLShortener(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		newURL := ur + "/1"
+		// если параметр не пустой, и является url
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(201)
 
