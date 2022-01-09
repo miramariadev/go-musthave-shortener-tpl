@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/miramariadev/go-musthave-shortener-tpl/internal/app"
+	"go-musthave-shortener-tpl/internal/app"
 )
 
 func main() {

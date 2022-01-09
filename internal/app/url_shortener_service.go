@@ -1,6 +1,6 @@
 package app
 
-import "github.com/miramariadev/go-musthave-shortener-tpl/internal/app/helpers"
+import "go-musthave-shortener-tpl/internal/app/helpers"
 
 type Storage interface {
 	AddURL(id string, url string)
