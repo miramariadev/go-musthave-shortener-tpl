@@ -1,15 +1,15 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
-	"net/url"
 )
 
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", handleURLShortener)
+	mux.HandleFunc("/", handleUrlShortener)
 
 	server := &http.Server{
 		Addr:    ":8080",
@@ -19,7 +19,7 @@ func main() {
 	log.Fatal(server.ListenAndServe())
 }
 
-func handleURLShortener(w http.ResponseWriter, r *http.Request) {
+func handleUrlShortener(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		if err := r.ParseForm(); err != nil {
@@ -27,19 +27,20 @@ func handleURLShortener(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		ur := r.FormValue("url")
-
-		_, err := url.ParseRequestURI(ur)
-		if err != nil {
+		url := r.FormValue("url")
+		if url == "" {
 			http.Error(w, "Bad request", http.StatusBadRequest)
-
 		}
-		newUrl := ur + "/1"
+
+		newUrl := url + "/1"
 
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(201)
 
-		w.Write([]byte(newUrl))
+		resp := make(map[string]string)
+		resp["url"] = newUrl
+		jsonResp, _ := json.Marshal(resp)
+		w.Write(jsonResp)
 
 	case "GET":
 		id := r.URL.Query().Get("id")
